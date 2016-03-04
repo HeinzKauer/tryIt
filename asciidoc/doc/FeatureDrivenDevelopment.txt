@@ -1,0 +1,137 @@
+= Feature Driven Development
+:doctype: article
+:lang: de
+:toc:
+:icons:
+:iconsdir: {asciidoc-dir}/images/icons
+:source-highlighter: source-highlight
+:language: java
+
+== Erstellen QA-Branch 
+
+== Recreate Branch 
+.Berechtigungen einstellen 
+------------------------------
+$ ll */.git | grep config
+$ chmod 770 */.git/config
+------------------------------
+.Auflisten der vorhandenen Features 
+------------------------------
+git recreate-branch QA-Branch -a `lsp` -l
+------------------------------
+Eine Auflistung -l mit -x funktioniert nicht. Aber es kommt eine Frage --> Wollen sie wirklich ?
+
+--------------------------------------
+git recreate-branch QA-Branch -a `lsp` -x exclude  -x exclude 
+--------------------------------------
+
+.save neu erzeugter QA-Branch push 
+--------------------------------------
+git push origin QA-Branch -f
+--------------------------------------
+
+
+
+.Bei Fehler / Abbruch auf QA zurücksetzen 
+------------------------------
+git checkout BRANCH-PER-FEATURE-PREFIX-QA-Branch 
+git branch -D QA-Branch 
+git branch -m QA-Branch
+------------------------------
+
+
+
+
+.Aktualisieren vom QA-Branch 
+------------------------------
+git checkout master 
+git branch -D QA-Branch 
+git checkout -b QA-Branch remotes/origin/QA-Branch
+- oder 
+git fetch --all --tags     // geht leider nicht wenn mehrere repositorys verwendet werden 
+git fetch origin --tags 
+
+git pull
+------------------------------
+
+.setzen neuer Starting Point 
+Achtung der Commit muss zuerst gemacht sein 
+------------------------------
+git tag starting-point-<version>
+git tag starting-point-3.7.3
+git push --tags 
+------------------------------
+
+.Move QA-Branch 
+------------------------------
+git branch -d QA-Branch
+git checkout -b QA-Branch starting-point-3.7.3
+git push origin QA-Branch
+------------------------------
+
+
+.rebase nicht released feature Baranches 
+------------------------------
+git branch -r --no-merged master --contains starting-point-<previousversion>
+git branch -r --no-merged master --contains starting-point-3.7
+------------------------------
+
+.rebase feature branches that were nit released 
+------------------------------
+git checkout <feature>
+
+git pull origin <feature>
+git tag before-<feature>-rebase
+git push --tags 
+git rebase master 
+
+*Resolve any conflicts*
+git diff HEAD
+git add <resolvedFiles>
+git rebase --continue
+
+*Push*
+git push origin <feature> --force
+------------------------------
+
+.sample
+------------------------------
+git checkout feature/KLBLD-2966-LogClientsideExceptionsOnServer 
+git pull origin feature/KLBLD-3780-Kontoauszug-f-Text-Excel-Download
+git tag before-KLBLD-3780-Kontoauszug-f-Text-Excel-Download-rebase
+git push --tags 
+git rebase master 
+
+git push origin feature/KLBLD-3780-Kontoauszug-f-Text-Excel-Download --force
+------------------------------
+
+
+.Git-Helper 
+------------------------------
+gitgraph
+
+gitproject <command>    // iteriert über alle git-Projekte und führt den <command> aus
+------------------------------
+
+
+
+.Tag master mit dem neuen Starting Point 
+------------------------------
+git checkout master 
+git tag startind-piont-<version>
+git push --tags
+------------------------------
+
+== Vorlage Code 
+[NOTE]
+a Note 
+
+
+
+== Links und Quellenangaben
+https://de.wikipedia.org/wiki/Feature_Driven_Development
+
+
+
+
+/Data/GitRepos/github/heinzkauer/tryIt/asciidoc/doc

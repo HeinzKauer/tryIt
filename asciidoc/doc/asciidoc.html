@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 <meta name="generator" content="AsciiDoc 8.6.9" />
-<title>README für das Generieren der Dokumentation via asciidoc</title>
+<title>Generieren der Dokumentation via asciidoc</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
 
@@ -727,13 +727,17 @@ install: function(toclevels) {
 }
 
 }
-asciidoc.install();
+asciidoc.install(2);
 /*]]>*/
 </script>
 </head>
 <body class="article">
 <div id="header">
-<h1>README für das Generieren der Dokumentation via asciidoc</h1>
+<h1>Generieren der Dokumentation via asciidoc</h1>
+<div id="toc">
+  <div id="toctitle">Inhaltsverzeichnis</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
 </div>
 <div id="content">
 <div class="sect1">
@@ -796,18 +800,50 @@ Für das Funktionieren des Source-Highlightings braucht es zudem das Shell-Komma
 <div class="sect1">
 <h2 id="_verwendung">Verwendung</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Gestartet wird die Übersetzung mit</p></div>
+<div class="paragraph"><p>Gestartet wird die Übersetzung mit
+[source,shel</p></div>
 <div class="listingblock">
 <div class="content">
-<pre><code></code></pre>
+<pre><code>python &lt;asciidoc-install-dir&gt;/asciidoc.py &lt;text-document-in-asciidoc-format&gt;</code></pre>
 </div></div>
 <div class="sect2">
 <h3 id="_live_preview">Live Preview</h3>
 <div class="paragraph"><p>Für kurze Change-Process-View-Zyklen zu erreichen gibt es (z.T. auf asciidoctor basierend) verschiedene Tools, s. z.B. <a href="https://plus.google.com/114112334290393746697/posts/14Pc4LXK5GU">https://plus.google.com/114112334290393746697/posts/14Pc4LXK5GU</a>. Ein "poor-man&#8217;s approach" ist das beiliegende autoasciidoc.sh zu verwenden um Änderungen in .txt-Files automatisch in HTML-Files zu übersetzen und ein Browser-Plugin (z.B. für Firefox das Add-On "Auto Reload") zu verwenden um die generierte HTML-Seite neu zu laden.</p></div>
 <div class="listingblock">
-<div class="content">
-<pre><code></code></pre>
-</div></div>
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">.</span> autoasciidoc<span style="color: #990000">.</span>sh</tt></pre></div></div>
+<div class="listingblock">
+<div class="title">see Code von autoasciidoc.sh</div>
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#! /bin/bash</span></span>
+
+<span style="color: #009900">pwd</span><span style="color: #990000">=</span>`pwd`
+<span style="color: #009900">relAsciiDocHome</span><span style="color: #990000">=</span>`python -c <span style="color: #FF0000">"import os.path; print os.path.relpath('$ASCIIDOC_HOME', '$pwd')"</span>`
+
+<span style="font-weight: bold"><span style="color: #0000FF">for</span></span> f <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> <span style="color: #990000">*.</span>txt
+<span style="font-weight: bold"><span style="color: #0000FF">do</span></span>
+        echo `date <span style="color: #990000">+%</span>T`<span style="color: #990000">:</span> initial processing <span style="color: #009900">$f</span>
+        python <span style="color: #009900">$ASCIIDOC_HOME</span>/asciidoc<span style="color: #990000">.</span>py -a asciidoc-dir<span style="color: #990000">=</span><span style="color: #009900">$relAsciiDocHome</span> <span style="color: #009900">$@</span> <span style="color: #009900">$f</span>
+<span style="font-weight: bold"><span style="color: #0000FF">done</span></span>
+echo `date <span style="color: #990000">+%</span>T`<span style="color: #990000">:</span> now listening <span style="font-weight: bold"><span style="color: #0000FF">for</span></span> changes <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> <span style="color: #990000">\*.</span>txt files
+
+<span style="font-weight: bold"><span style="color: #0000FF">while</span></span> <span style="color: #990000">[</span> <span style="color: #993399">1</span> <span style="color: #990000">]</span>
+<span style="font-weight: bold"><span style="color: #0000FF">do</span></span>
+        <span style="color: #009900">newest</span><span style="color: #990000">=</span>`ls -<span style="color: #993399">1</span> -t --indicator-style<span style="color: #990000">=</span>none<span style="color: #990000">|</span>head -<span style="color: #993399">1</span><span style="color: #990000">|</span>grep <span style="color: #990000">.</span>txt<span style="color: #009900">$`</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">[</span> <span style="color: #FF0000">"$newest"</span> <span style="color: #990000">!=</span> <span style="color: #FF0000">""</span> <span style="color: #990000">]</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">then</span></span>
+                echo `date <span style="color: #990000">+%</span>T`<span style="color: #990000">:</span> processing <span style="color: #009900">$newest</span>
+                python <span style="color: #009900">$ASCIIDOC_HOME</span>/asciidoc<span style="color: #990000">.</span>py -a asciidoc-dir<span style="color: #990000">=</span><span style="color: #009900">$relAsciiDocHome</span> <span style="color: #009900">$@</span> <span style="color: #009900">$newest</span>
+        <span style="font-weight: bold"><span style="color: #0000FF">fi</span></span>
+        sleep <span style="color: #990000">.</span><span style="color: #993399">1</span>
+<span style="font-weight: bold"><span style="color: #0000FF">done</span></span>
+</tt></pre></div></div>
 </div>
 </div>
 </div>
@@ -815,7 +851,7 @@ Für das Funktionieren des Source-Highlightings braucht es zudem das Shell-Komma
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-01-25 07:37:33 Mitteleuropäische Zeit
+Letzte Änderung 2016-03-04 08:52:22 CET
 </div>
 </div>
 </body>

@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 <meta name="generator" content="AsciiDoc 8.6.9" />
-<title>README für das Generieren der Dokumentation via asciidoc</title>
+<title>Feature Driven Development</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
 
@@ -727,99 +727,157 @@ install: function(toclevels) {
 }
 
 }
-asciidoc.install();
+asciidoc.install(2);
 /*]]>*/
 </script>
 </head>
 <body class="article">
 <div id="header">
-<h1>README für das Generieren der Dokumentation via asciidoc</h1>
+<h1>Feature Driven Development</h1>
+<div id="toc">
+  <div id="toctitle">Inhaltsverzeichnis</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_ursprung_und_links">Ursprung und Links</h2>
+<h2 id="_erstellen_qa_branch">Erstellen QA-Branch</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Die Dokumentation basiert auf asciidoc (<a href="http://www.methods.co.nz/asciidoc/">http://www.methods.co.nz/asciidoc/</a>).</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-User Guide: <a href="http://www.methods.co.nz/asciidoc/userguide.html">http://www.methods.co.nz/asciidoc/userguide.html</a>
-</p>
-</li>
-<li>
-<p>
-Cheat Sheet: <a href="http://powerman.name/doc/asciidoc">http://powerman.name/doc/asciidoc</a>
-</p>
-</li>
-<li>
-<p>
-Maven-Integrationen:
-</p>
-<div class="ulist"><ul>
-<li>
-<p>
-<a href="https://github.com/wisdom-framework/wisdom/tree/master/extensions/wisdom-asciidoc-maven-plugin">https://github.com/wisdom-framework/wisdom/tree/master/extensions/wisdom-asciidoc-maven-plugin</a>
-</p>
-</li>
-<li>
-<p>
-<a href="http://mvnrepository.com/artifact/org.wisdom-framework/wisdom-asciidoc-maven-plugin/0.8.0">http://mvnrepository.com/artifact/org.wisdom-framework/wisdom-asciidoc-maven-plugin/0.8.0</a>
-</p>
-</li>
-<li>
-<p>
-<a href="http://asciidoc.r-w-x.net/introduction.html">http://asciidoc.r-w-x.net/introduction.html</a>
-</p>
-</li>
-</ul></div>
-</li>
-</ul></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_installationen">Installationen</h2>
+<h2 id="_recreate_branch">Recreate Branch</h2>
 <div class="sectionbody">
-<div class="ulist"><ul>
-<li>
-<p>
-Um die Dokumentation in HTML5-Format zu erhalten benötigt man die asciidoc-Distribution (z.B. von <a href="http://sourceforge.net/projects/asciidoc/files/latest/download">http://sourceforge.net/projects/asciidoc/files/latest/download</a>) und einen Python-Interpreter (z.B. in Cygwin).
-</p>
-</li>
-<li>
-<p>
-Für das Funktionieren des Source-Highlightings braucht es zudem das Shell-Kommando source-highlight (Default in asciidoc.conf). Dazu ggf. das Cygwin-Paket source-highlight installieren.
-</p>
-</li>
-</ul></div>
+<div class="listingblock">
+<div class="title">Berechtigungen einstellen</div>
+<div class="content">
+<pre><code>$ ll */.git | grep config
+$ chmod 770 */.git/config</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="title">Auflisten der vorhandenen Features</div>
+<div class="content">
+<pre><code>git recreate-branch QA-Branch -a `lsp` -l</code></pre>
+</div></div>
+<div class="paragraph"><p>Eine Auflistung -l mit -x funktioniert nicht. Aber es kommt eine Frage -&#8594; Wollen sie wirklich ?</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>git recreate-branch QA-Branch -a `lsp` -x exclude  -x exclude</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="title">save neu erzeugter QA-Branch push</div>
+<div class="content">
+<pre><code>git push origin QA-Branch -f</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="title">Bei Fehler / Abbruch auf QA zurücksetzen</div>
+<div class="content">
+<pre><code>git checkout BRANCH-PER-FEATURE-PREFIX-QA-Branch
+git branch -D QA-Branch
+git branch -m QA-Branch</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="title">Aktualisieren vom QA-Branch</div>
+<div class="content">
+<pre><code>git checkout master
+git branch -D QA-Branch
+git checkout -b QA-Branch remotes/origin/QA-Branch
+- oder
+git fetch --all --tags     // geht leider nicht wenn mehrere repositorys verwendet werden
+git fetch origin --tags
+
+git pull</code></pre>
+</div></div>
+<div class="paragraph"><div class="title">setzen neuer Starting Point</div><p>Achtung der Commit muss zuerst gemacht sein</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>git tag starting-point-&lt;version&gt;
+git tag starting-point-3.7.3
+git push --tags</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="title">Move QA-Branch</div>
+<div class="content">
+<pre><code>git branch -d QA-Branch
+git checkout -b QA-Branch starting-point-3.7.3
+git push origin QA-Branch</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="title">rebase nicht released feature Baranches</div>
+<div class="content">
+<pre><code>git branch -r --no-merged master --contains starting-point-&lt;previousversion&gt;
+git branch -r --no-merged master --contains starting-point-3.7</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="title">rebase feature branches that were nit released</div>
+<div class="content">
+<pre><code>git checkout &lt;feature&gt;
+
+git pull origin &lt;feature&gt;
+git tag before-&lt;feature&gt;-rebase
+git push --tags
+git rebase master
+
+*Resolve any conflicts*
+git diff HEAD
+git add &lt;resolvedFiles&gt;
+git rebase --continue
+
+*Push*
+git push origin &lt;feature&gt; --force</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="title">sample</div>
+<div class="content">
+<pre><code>git checkout feature/KLBLD-2966-LogClientsideExceptionsOnServer
+git pull origin feature/KLBLD-3780-Kontoauszug-f-Text-Excel-Download
+git tag before-KLBLD-3780-Kontoauszug-f-Text-Excel-Download-rebase
+git push --tags
+git rebase master
+
+git push origin feature/KLBLD-3780-Kontoauszug-f-Text-Excel-Download --force</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="title">Git-Helper</div>
+<div class="content">
+<pre><code>gitgraph
+
+gitproject &lt;command&gt;    // iteriert über alle git-Projekte und führt den &lt;command&gt; aus</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="title">Tag master mit dem neuen Starting Point</div>
+<div class="content">
+<pre><code>git checkout master
+git tag startind-piont-&lt;version&gt;
+git push --tags</code></pre>
+</div></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_verwendung">Verwendung</h2>
+<h2 id="_vorlage_code">Vorlage Code</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Gestartet wird die Übersetzung mit</p></div>
-<div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>python <span style="color: #990000">&lt;</span>asciidoc-install-dir<span style="color: #990000">&gt;</span>/asciidoc<span style="color: #990000">.</span>py <span style="color: #990000">&lt;</span>text-document-in-asciidoc-format<span style="color: #990000">&gt;</span></tt></pre></div></div>
-<div class="sect2">
-<h3 id="_live_preview">Live Preview</h3>
-<div class="paragraph"><p>Für kurze Change-Process-View-Zyklen zu erreichen gibt es (z.T. auf asciidoctor basierend) verschiedene Tools, s. z.B. <a href="https://plus.google.com/114112334290393746697/posts/14Pc4LXK5GU">https://plus.google.com/114112334290393746697/posts/14Pc4LXK5GU</a>. Ein "poor-man&#8217;s approach" ist das beiliegende autoasciidoc.sh zu verwenden um Änderungen in .txt-Files automatisch in HTML-Files zu übersetzen und ein Browser-Plugin (z.B. für Firefox das Add-On "Auto Reload") zu verwenden um die generierte HTML-Seite neu zu laden.</p></div>
-<div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.8
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">.</span> autoasciidoc<span style="color: #990000">.</span>sh</tt></pre></div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="../../../../../../../Dev/tools/asciidoc-8.6.9/images/icons/note.png" alt="Anmerkung" />
+</td>
+<td class="content">a Note</td>
+</tr></table>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_links_und_quellenangaben">Links und Quellenangaben</h2>
+<div class="sectionbody">
+<div class="paragraph"><p><a href="https://de.wikipedia.org/wiki/Feature_Driven_Development">https://de.wikipedia.org/wiki/Feature_Driven_Development</a></p></div>
+<div class="paragraph"><p>/Data/GitRepos/github/heinzkauer/tryIt/asciidoc/doc</p></div>
 </div>
 </div>
 </div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-01-25 07:37:33 CET
+Letzte Änderung 2016-03-04 13:41:21 CET
 </div>
 </div>
 </body>
