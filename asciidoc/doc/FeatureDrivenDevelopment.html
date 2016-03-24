@@ -727,7 +727,7 @@ install: function(toclevels) {
 }
 
 }
-asciidoc.install(2);
+asciidoc.install(4);
 /*]]>*/
 </script>
 </head>
@@ -741,6 +741,75 @@ asciidoc.install(2);
 </div>
 <div id="content">
 <div class="sect1">
+<h2 id="_todo">Todo</h2>
+<div class="sectionbody">
+</div>
+</div>
+<div class="sect1">
+<h2 id="_shell">Shell</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_logon">logon</h3>
+<div class="paragraph"><p>Beim logon der shell werden verschiedene scripts eingelesen</p></div>
+<div class="paragraph"><p>/etc/profile
+/etc/profile.d/</p></div>
+<div class="paragraph"><p>$HOME/.profile</p></div>
+<div class="paragraph"><p><a href="https://www.video2brain.com/de/tutorial/die-konfigurationsdateien">https://www.video2brain.com/de/tutorial/die-konfigurationsdateien</a></p></div>
+<div class="sect3">
+<h4 id="_konfiguration_bei_der_bash_shell">konfiguration bei der Bash shell</h4>
+<div class="paragraph"><p>LoginShell</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+/etc/profile
+</p>
+</li>
+<li>
+<p>
+$HOME/.bash_profile
+</p>
+</li>
+<li>
+<p>
+$HOME/.bash_login
+</p>
+</li>
+<li>
+<p>
+$HOME/.profile
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Sub-Shell</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+$HOME/.bashrc
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_echo">echo</h3>
+<div class="paragraph"><p>man echo</p></div>
+</div>
+<div class="sect2">
+<h3 id="_more">more</h3>
+<div class="paragraph"><p>more # eine Datei ausgeben</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_helper">Helper</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre><code>git checkout -b QA-Branch remotes/origin/QA-Branch --</code></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_erstellen_qa_branch">Erstellen QA-Branch</h2>
 <div class="sectionbody">
 </div>
@@ -752,10 +821,14 @@ asciidoc.install(2);
 <div class="title">Berechtigungen einstellen</div>
 <div class="content">
 <pre><code>$ ll */.git | grep config
-$ chmod 770 */.git/config</code></pre>
+$ chmod 770 */.git/config
+
+$ ll .git | grep config
+$ chmod 770 .git/config</code></pre>
 </div></div>
+<div class="sect2">
+<h3 id="_auflisten_der_vorhandenen_features">Auflisten der vorhandenen Features</h3>
 <div class="listingblock">
-<div class="title">Auflisten der vorhandenen Features</div>
 <div class="content">
 <pre><code>git recreate-branch QA-Branch -a `lsp` -l</code></pre>
 </div></div>
@@ -764,20 +837,26 @@ $ chmod 770 */.git/config</code></pre>
 <div class="content">
 <pre><code>git recreate-branch QA-Branch -a `lsp` -x exclude  -x exclude</code></pre>
 </div></div>
+</div>
+<div class="sect2">
+<h3 id="_save_neu_erzeugter_qa_branch_push">save neu erzeugter QA-Branch push</h3>
 <div class="listingblock">
-<div class="title">save neu erzeugter QA-Branch push</div>
 <div class="content">
 <pre><code>git push origin QA-Branch -f</code></pre>
 </div></div>
+</div>
+<div class="sect2">
+<h3 id="_bei_fehler_abbruch_auf_qa_zurücksetzen">Bei Fehler / Abbruch auf QA zurücksetzen</h3>
 <div class="listingblock">
-<div class="title">Bei Fehler / Abbruch auf QA zurücksetzen</div>
 <div class="content">
 <pre><code>git checkout BRANCH-PER-FEATURE-PREFIX-QA-Branch
 git branch -D QA-Branch
 git branch -m QA-Branch</code></pre>
 </div></div>
+</div>
+<div class="sect2">
+<h3 id="_aktualisieren_vom_qa_branch">Aktualisieren vom QA-Branch</h3>
 <div class="listingblock">
-<div class="title">Aktualisieren vom QA-Branch</div>
 <div class="content">
 <pre><code>git checkout master
 git branch -D QA-Branch
@@ -785,31 +864,42 @@ git checkout -b QA-Branch remotes/origin/QA-Branch
 - oder
 git fetch --all --tags     // geht leider nicht wenn mehrere repositorys verwendet werden
 git fetch origin --tags
+git reset --hard origin/QA-Branch // wenn keine lokale Aenderunge
 
 git pull</code></pre>
 </div></div>
-<div class="paragraph"><div class="title">setzen neuer Starting Point</div><p>Achtung der Commit muss zuerst gemacht sein</p></div>
+</div>
+<div class="sect2">
+<h3 id="_setzen_neuer_starting_point">setzen neuer Starting Point</h3>
+<div class="paragraph"><p>Achtung der Commit muss zuerst gemacht sein</p></div>
 <div class="listingblock">
 <div class="content">
 <pre><code>git tag starting-point-&lt;version&gt;
 git tag starting-point-3.7.3
 git push --tags</code></pre>
 </div></div>
+</div>
+<div class="sect2">
+<h3 id="_move_qa_branch">Move QA-Branch</h3>
 <div class="listingblock">
-<div class="title">Move QA-Branch</div>
 <div class="content">
 <pre><code>git branch -d QA-Branch
 git checkout -b QA-Branch starting-point-3.7.3
 git push origin QA-Branch</code></pre>
 </div></div>
+</div>
+<div class="sect2">
+<h3 id="_rebase_welche_feature_sind_nicht_in_eimen_tag_übernommen">rebase: welche feature sind nicht in eimen Tag übernommen</h3>
+<div class="paragraph"><p>Damit kann festgestellt werden welche feature nicht auf einem bestimmoten Tag ge-Merget sind</p></div>
 <div class="listingblock">
-<div class="title">rebase nicht released feature Baranches</div>
 <div class="content">
 <pre><code>git branch -r --no-merged master --contains starting-point-&lt;previousversion&gt;
 git branch -r --no-merged master --contains starting-point-3.7</code></pre>
 </div></div>
+</div>
+<div class="sect2">
+<h3 id="_rebase_feature_branches_that_were_nit_released">rebase feature branches that were nit released</h3>
 <div class="listingblock">
-<div class="title">rebase feature branches that were nit released</div>
 <div class="content">
 <pre><code>git checkout &lt;feature&gt;
 
@@ -837,20 +927,25 @@ git rebase master
 
 git push origin feature/KLBLD-3780-Kontoauszug-f-Text-Excel-Download --force</code></pre>
 </div></div>
+</div>
+<div class="sect2">
+<h3 id="_git_helper">Git-Helper</h3>
 <div class="listingblock">
-<div class="title">Git-Helper</div>
 <div class="content">
 <pre><code>gitgraph
 
 gitproject &lt;command&gt;    // iteriert über alle git-Projekte und führt den &lt;command&gt; aus</code></pre>
 </div></div>
+</div>
+<div class="sect2">
+<h3 id="_tag_master_mit_dem_neuen_starting_point">Tag master mit dem neuen Starting Point</h3>
 <div class="listingblock">
-<div class="title">Tag master mit dem neuen Starting Point</div>
 <div class="content">
 <pre><code>git checkout master
 git tag startind-piont-&lt;version&gt;
 git push --tags</code></pre>
 </div></div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -877,7 +972,7 @@ git push --tags</code></pre>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Letzte Änderung 2016-03-04 13:41:21 CET
+Letzte Änderung 2016-03-24 07:29:07 CET
 </div>
 </div>
 </body>

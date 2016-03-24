@@ -1,11 +1,57 @@
 = Feature Driven Development
 :doctype: article
 :lang: de
-:toc:
+:toc: 
+:toclevels: 4
 :icons:
 :iconsdir: {asciidoc-dir}/images/icons
 :source-highlighter: source-highlight
 :language: java
+
+
+== Todo == 
+
+
+== Shell ==
+
+=== logon ===
+Beim logon der shell werden verschiedene scripts eingelesen 
+
+/etc/profile 
+/etc/profile.d/
+
+$HOME/.profile 
+
+
+https://www.video2brain.com/de/tutorial/die-konfigurationsdateien
+
+==== konfiguration bei der Bash shell ====
+LoginShell
+
+- /etc/profile 
+- $HOME/.bash_profile 
+- $HOME/.bash_login
+- $HOME/.profile 
+
+Sub-Shell 
+
+- $HOME/.bashrc 
+
+=== echo ===
+
+man echo
+
+
+=== more ===
+
+more # eine Datei ausgeben 
+
+
+== Helper ==
+------------------------------
+git checkout -b QA-Branch remotes/origin/QA-Branch --
+------------------------------
+
 
 == Erstellen QA-Branch 
 
@@ -14,8 +60,11 @@
 ------------------------------
 $ ll */.git | grep config
 $ chmod 770 */.git/config
+
+$ ll .git | grep config
+$ chmod 770 .git/config
 ------------------------------
-.Auflisten der vorhandenen Features 
+=== Auflisten der vorhandenen Features 
 ------------------------------
 git recreate-branch QA-Branch -a `lsp` -l
 ------------------------------
@@ -25,14 +74,14 @@ Eine Auflistung -l mit -x funktioniert nicht. Aber es kommt eine Frage --> Wolle
 git recreate-branch QA-Branch -a `lsp` -x exclude  -x exclude 
 --------------------------------------
 
-.save neu erzeugter QA-Branch push 
+=== save neu erzeugter QA-Branch push 
 --------------------------------------
 git push origin QA-Branch -f
 --------------------------------------
 
 
 
-.Bei Fehler / Abbruch auf QA zurücksetzen 
+=== Bei Fehler / Abbruch auf QA zurücksetzen 
 ------------------------------
 git checkout BRANCH-PER-FEATURE-PREFIX-QA-Branch 
 git branch -D QA-Branch 
@@ -42,7 +91,7 @@ git branch -m QA-Branch
 
 
 
-.Aktualisieren vom QA-Branch 
+=== Aktualisieren vom QA-Branch 
 ------------------------------
 git checkout master 
 git branch -D QA-Branch 
@@ -50,11 +99,12 @@ git checkout -b QA-Branch remotes/origin/QA-Branch
 - oder 
 git fetch --all --tags     // geht leider nicht wenn mehrere repositorys verwendet werden 
 git fetch origin --tags 
+git reset --hard origin/QA-Branch // wenn keine lokale Aenderunge 
 
 git pull
 ------------------------------
 
-.setzen neuer Starting Point 
+=== setzen neuer Starting Point 
 Achtung der Commit muss zuerst gemacht sein 
 ------------------------------
 git tag starting-point-<version>
@@ -62,7 +112,7 @@ git tag starting-point-3.7.3
 git push --tags 
 ------------------------------
 
-.Move QA-Branch 
+=== Move QA-Branch 
 ------------------------------
 git branch -d QA-Branch
 git checkout -b QA-Branch starting-point-3.7.3
@@ -70,13 +120,14 @@ git push origin QA-Branch
 ------------------------------
 
 
-.rebase nicht released feature Baranches 
+=== rebase: welche feature sind nicht in eimen Tag übernommen
+Damit kann festgestellt werden welche feature nicht auf einem bestimmoten Tag ge-Merget sind 
 ------------------------------
 git branch -r --no-merged master --contains starting-point-<previousversion>
 git branch -r --no-merged master --contains starting-point-3.7
 ------------------------------
 
-.rebase feature branches that were nit released 
+=== rebase feature branches that were nit released 
 ------------------------------
 git checkout <feature>
 
@@ -106,7 +157,7 @@ git push origin feature/KLBLD-3780-Kontoauszug-f-Text-Excel-Download --force
 ------------------------------
 
 
-.Git-Helper 
+=== Git-Helper 
 ------------------------------
 gitgraph
 
@@ -115,7 +166,7 @@ gitproject <command>    // iteriert über alle git-Projekte und führt den <comm
 
 
 
-.Tag master mit dem neuen Starting Point 
+=== Tag master mit dem neuen Starting Point 
 ------------------------------
 git checkout master 
 git tag startind-piont-<version>
