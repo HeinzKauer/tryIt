@@ -152,8 +152,16 @@ git pull origin feature/KLBLD-3780-Kontoauszug-f-Text-Excel-Download
 git tag before-KLBLD-3780-Kontoauszug-f-Text-Excel-Download-rebase
 git push --tags 
 git rebase master 
-
 git push origin feature/KLBLD-3780-Kontoauszug-f-Text-Excel-Download --force
+
+
+git checkout feature
+git pull origin feature
+git tag before-feature-rebase
+git push --tags
+git rebase master
+git push origin feature --force
+
 ------------------------------
 
 
@@ -172,6 +180,31 @@ git checkout master
 git tag startind-piont-<version>
 git push --tags
 ------------------------------
+
+== Releas Build
+=== Merge QA-Branch onto master
+------------------------------
+git checkout master
+git fetch --all
+git pull origin master
+git merge --no-ff QA-Branch
+------------------------------
+
+=== Adapt versions of dependent modules in *BuildRoot/pom.xml
+adapt property value version.NewBLDMavenConfig in NewBLDMavenConfig/pom.xml
+
+=== Commit and push changes 
+------------------------------
+git commit -am "prepare release build"
+git push origin master
+------------------------------
+
+=== Build and deploy release for TEST (in CCM)	 	 	 	 	 	 	 	 
+=== Transfer release to INT (in CCM, build and deploy immediately)	 	 	 	 	 	 	 	 
+=== Transfer release to ACC (in CCM, build and deploy immediately)	 	 	 	 	 	 	 	 
+=== Build release for PROD (in CCM, build immediately)	 	 	 	 	 	 	 	 
+=== Deploy release for PROD (in CCM, desired point in time and with change nr)
+
 
 == Vorlage Code 
 [NOTE]

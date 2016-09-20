@@ -924,8 +924,15 @@ git pull origin feature/KLBLD-3780-Kontoauszug-f-Text-Excel-Download
 git tag before-KLBLD-3780-Kontoauszug-f-Text-Excel-Download-rebase
 git push --tags
 git rebase master
+git push origin feature/KLBLD-3780-Kontoauszug-f-Text-Excel-Download --force
 
-git push origin feature/KLBLD-3780-Kontoauszug-f-Text-Excel-Download --force</code></pre>
+
+git checkout feature
+git pull origin feature
+git tag before-feature-rebase
+git push --tags
+git rebase master
+git push origin feature --force</code></pre>
 </div></div>
 </div>
 <div class="sect2">
@@ -945,6 +952,18 @@ gitproject &lt;command&gt;    // iteriert über alle git-Projekte und führt den
 git tag startind-piont-&lt;version&gt;
 git push --tags</code></pre>
 </div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_releas_build">Releas Build</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_merge_qa_branch_onto_master">Merge QA-Branch onto master</h3>
+<div class="paragraph"><p>git checkout master
+git fetch --all
+git pull origin master
+git merge --no-ff QA-Branch</p></div>
 </div>
 </div>
 </div>
@@ -972,7 +991,7 @@ git push --tags</code></pre>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Letzte Änderung 2016-03-24 07:29:07 CET
+Letzte Änderung 2016-05-17 10:12:19 CEST
 </div>
 </div>
 </body>
