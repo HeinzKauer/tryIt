@@ -179,6 +179,11 @@ _build() {
 			mvn clean install $BUILD_TEST
 		;;
 
+		I )
+			cd $NEWBLD_SPACE/impadok
+			mvn clean install $BUILD_TEST
+		;;
+
 		z )
 			cd $NEWBLD_SPACE/zie2klService
 			mvn clean install $BUILD_TEST
@@ -232,6 +237,7 @@ _build() {
 			echo "pws = prevoWebService" 
 			echo "pal = prevoAccessLayer" 
 			echo "wsa = webServiceAccess" 
+			echo "i = impaDok" 
 			echo "z = zie2klService" 
 			echo "g = gwtBase" 
 			echo "m = myKLBVG" 
