@@ -12,6 +12,7 @@ kshelp(){
 
     case "$1" in
 
+	
 
 	* )	
 echo "help"
@@ -33,6 +34,7 @@ ks(){
 	cdws 	) _cdws $2 ;;
 	b 		) _build $2 $3 ;;
 	build 	) _build $2 $3 ;;
+	help    ) _help $2 ;;
 	
 
 
@@ -96,21 +98,18 @@ ks(){
 		done
 		;;
 
-	help )
-	    # alle Parameter weitergeben 
-ks	    _help $@
-		;;
+
 		
 	* )	
-	_help
-		for dir in $(cat .mplist)
-		do
-			pushd "$dir" > /dev/null
-			if [ "$loglevel" == "0" ]; then echo -e "${COL_YELLOW}$dir... $COL_NONE"; fi
-			"$@"
-			if [ "$loglevel" == "0" ]; then echo -e "${COL_YELLOW}completed\n $COL_NONE"; fi
-			popd > /dev/null
-		done
+	_help $2
+#		for dir in $(cat .mplist)
+#		do
+	#		pushd "$dir" > /dev/null
+	#	if [ "$loglevel" == "0" ]; then echo -e "${COL_YELLOW}$dir... $COL_NONE"; fi
+	#		"$@"
+	#		if [ "$loglevel" == "0" ]; then echo -e "${COL_YELLOW}completed\n $COL_NONE"; fi
+	#		popd > /dev/null
+	#	done
 		;;
 	esac
 }
@@ -166,64 +165,74 @@ _build() {
 	
 		pws )
 			cd $NEWBLD_SPACE/prevoWebService
+			git branch 
 			mvn clean install $BUILD_TEST
 		;;
 
     	pal )
 			cd $NEWBLD_SPACE/prevoAccessLayer
+			git branch 
 			mvn clean install $BUILD_TEST
 		;;
 
 		wsa )
 			cd $NEWBLD_SPACE/webServiceAccess
+			git branch 
 			mvn clean install $BUILD_TEST
 		;;
 
 		I )
 			cd $NEWBLD_SPACE/impadok
+			git branch 
 			mvn clean install $BUILD_TEST
 		;;
 
 		z )
 			cd $NEWBLD_SPACE/zie2klService
+			git branch 
 			mvn clean install $BUILD_TEST
 		;;
 
 		g )
 			cd $NEWBLD_SPACE/gwtBase
+			git branch 
 			mvn clean install $BUILD_TEST
 		;;
 
 		m )
 			cd $NEWBLD_SPACE/myKLBVG
+			git branch 
 			mvn clean install $BUILD_TEST
 		;;
 
 		n )
 			cd $NEWBLD_SPACE/NewBLD
+			git branch 
 			mvn clean install $BUILD_TEST
 		;;
 		
 		g+ )
 			cd $NEWBLD_SPACE/gwtBase
+			git branch 
 			mvn clean install $BUILD_TEST
 			cd $NEWBLD_SPACE/myKLBVG
+			git branch 
 			mvn clean install $BUILD_TEST
 			cd $NEWBLD_SPACE/NewBLD
+			git branch 
 			mvn clean install $BUILD_TEST
 		;;
 
 		m+ )
 			cd $NEWBLD_SPACE/myKLBVG
+			git branch 
 			mvn clean install $BUILD_TEST
 			cd $NEWBLD_SPACE/NewBLD
+			git branch 
 			mvn clean install $BUILD_TEST
 		;;
 
-		n+ )
-			cd $NEWBLD_SPACE/NewBLD
-			mvn clean install $BUILD_TEST
-		;;
+
 		
 		
 		
@@ -244,7 +253,6 @@ _build() {
 			echo "n = NewBLD"
 			echo "g+ = gwtBase,myKLBVG,NewBLD" 
 			echo "m+ = myKLBVG,NewBLD" 
-			echo "n+ = NewBLD" 			
 			echo "" 
 			echo "PARAMETER:" 
 			echo "-t = Test ausführen "
@@ -259,8 +267,7 @@ _build() {
 _help() {
     source $KAUSOFT/kausoft.sh    
 	
-	
-   	case "$2" in	
+   	case "$1" in	
 	    # 
 		param )	
 			echo "ks- 170213-0819 --- help "$2 "-----------------------"
@@ -281,12 +288,20 @@ _help() {
 	
 	
 		* )	
-			echo "ks- 170213-0822 --- help "$2 "-----------------------"
-			echo "Folgende Parameter können an help übergeben werden"
-			echo "param        = Auflisten der gesetzten Variablen  "			
-			echo "cdws         = Setzen der Arbeitsumgebung "			
+#		    echo ". . . . . . . . . "
+#		    echo ""
+			echo "ks help param - Auflisten der gesetzten Variablen  "			
+			echo "ks cdws - Setzen der Arbeitsumgebung "			
+			echo "ks b|build [MODULE] [PARAMETER] - maven Bulid  "			
 			echo			
-			echo "in ycgwin werden folgende Files geladen --> .basch_profile .bashrc .profile  .aliases  --> C:\Users\B026670"
+			echo "gitbranchstat"	
+			echo "gitgraph"	
+#		    echo "_______________________________"
+			
+			
+			
+			
+	#		echo "in ycgwin werden folgende Files geladen --> .basch_profile .bashrc .profile  .aliases  --> C:\Users\B026670"
 			
 			
 			
