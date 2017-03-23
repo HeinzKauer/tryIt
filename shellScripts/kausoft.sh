@@ -166,7 +166,7 @@ _build() {
 		pws )
 			cd $NEWBLD_SPACE/prevoWebService
 			git branch 
-			mvn clean install $BUILD_TEST
+			mvn clean install $BUILD_TEST -Pint  
 		;;
 
     	pal )
@@ -181,7 +181,7 @@ _build() {
 			mvn clean install $BUILD_TEST
 		;;
 
-		I )
+		i )
 			cd $NEWBLD_SPACE/impadok
 			git branch 
 			mvn clean install $BUILD_TEST
